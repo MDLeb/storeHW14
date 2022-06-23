@@ -24,10 +24,6 @@ class Store {
         return this.#data.find(elem => elem.id == id);
     }
 
-    updateLocalStorage = () => {
-        localStorage.setItem('storeApp', '');
-        localStorage.setItem('storeApp', JSON.stringify(this.#data));
-    }
 }
 
 export default Store;

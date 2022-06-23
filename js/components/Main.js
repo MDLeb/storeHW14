@@ -140,9 +140,16 @@ const Main = function() {
             mainElem.classList.add('main_cart');
             let cartList = document.createElement('ul');
             cartList.classList.add('cart_list');
+
+            // new Set(window.store.cart.get()).forEach(elem => {
+            //     console.log('+');
+            //     cartList.append(this.createCartItem(elem));
+            // })
             new Set(window.store.cart.get()).forEach(elem => {
+                console.log('+');
                 cartList.append(this.createCartItem(elem));
             })
+            
             mainElem.append(cartList);
             mainElem.append(document.createElement('span').innerText = `To pay: $${window.store.cart.calc()}`);
         }

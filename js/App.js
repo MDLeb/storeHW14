@@ -52,9 +52,9 @@ const App = function () {
         main.querySelector('.spinner').remove();
         
         if(window.localStorage.storeApp) {
-            let arr = await JSON.parse(window.localStorage.storeApp);
-            arr.forEach(elem => 
-                window.store.cart.add(new Product(elem))
+            
+            JSON.parse(window.localStorage.storeApp).forEach(elem => 
+                window.store.cart.add(window.store.getById(elem.id))
             )
         }
 
