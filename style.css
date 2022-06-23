@@ -29,6 +29,19 @@ button {
     height: 80px;
     background-color: #ccc;
 }
+.header_logo {
+    padding: 0 10px;
+    height: 100%;
+    width: 50px;
+    display: flex;
+    align-items: center;
+}
+.header_logo img {
+    object-fit: cover;
+    max-height: 90%;
+    max-width: 100%;
+}
+
 .header .cart {
     position: absolute;
     cursor: pointer;
@@ -171,6 +184,37 @@ button {
     border-bottom: 1px solid #ccc;
     position: relative;
 }
+.cart_list__item_title {
+    flex: 4;
+}
+.cart_list__item_price {
+    flex: 1;
+    text-align: center;
+}
+.cart_list__item_counter {
+    flex: 0.4;
+    text-align: center;
+    order: 1;
+}
+.cart_list__item_increase_btn,
+.cart_list__item_reduce_btn {
+    width: 20px;
+    height: 20px;
+    background-color: yellowgreen;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cart_list__item_reduce_btn {
+    order: 2;
+}
+
+
 .cart_list__item_remove_btn {
     position: absolute;
     cursor: pointer;

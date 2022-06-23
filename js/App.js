@@ -3,6 +3,7 @@ import Header from "./components/Header.js";
 import Nav from "./components/Nav.js";
 import Main from "./components/Main.js";
 import Footer from "./components/Footer.js";
+import Product from "./core/Product.js";
 
 const App = function () {
 
@@ -43,14 +44,20 @@ const App = function () {
         window.addEventListener('cartChanged', () => {
             header.cartItems = window.store.cart.get().length;
             header.updateCart();
-
             main.append(mainElem.render());
 
         })
 
         await this.getData();
         main.querySelector('.spinner').remove();
-                
+        
+        if(window.localStorage.storeApp) {
+            let arr = await JSON.parse(window.localStorage.storeApp);
+            arr.forEach(elem => 
+                window.store.cart.add(new Product(elem))
+            )
+        }
+
         main.append(mainElem.render());
         header.cartItems = window.store.cart.get().length;
     }

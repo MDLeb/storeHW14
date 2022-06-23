@@ -1,7 +1,8 @@
 const Main = function() {
 
     this.createProductCard = (product) => {
-        let elem = document.createElement('div');
+        let elem = document.createElement('a');
+        elem.href = `#product/${product.id}`;
         elem.classList.add('product-card');
         
         let addBtn = document.createElement('button');
@@ -10,9 +11,10 @@ const Main = function() {
             addBtn.innerText = 'added';
         else addBtn.innerText = 'To cart';
         addBtn.addEventListener('click', (event) => {
+            event.preventDefault();
             let id = event.target.parentNode.querySelector('input[name="id"]').value;
             this.onAdd(id);
-        });
+        },);
 
         elem.innerHTML = `
             <div class="product-card__title">${product.title}</div>
@@ -51,6 +53,7 @@ const Main = function() {
         let itemCounter = window.store.cart.isInCart(product.id).length;
 
         let increaseBtn = document.createElement('button');
+        increaseBtn.classList.add('cart_list__item_increase_btn');
         increaseBtn.innerText = '+';
         increaseBtn.addEventListener('click', (event) => {
             let id = event.target.parentNode.querySelector('input[name="id"]').value;
@@ -58,6 +61,7 @@ const Main = function() {
         })
 
         let reduceBtn = document.createElement('button');
+        reduceBtn.classList.add('cart_list__item_reduce_btn')
         reduceBtn.innerText = '-';
         reduceBtn.addEventListener('click', (event) => {
             let id = event.target.parentNode.querySelector('input[name="id"]').value;
@@ -70,12 +74,45 @@ const Main = function() {
 
             <span class="cart_list__item_counter">${itemCounter}</span>
            
-            <span class="cart_list__item_price">$${sumPrice}</span>
+            <span class="cart_list__item_price">$${sumPrice.toFixed(2)}</span>
         `;
         elem.append(increaseBtn, reduceBtn, removeBtn);
         return elem;
     }
 
+    this.createProductPage = (product) => {
+        let elem = document.createElement('div');
+        elem.classList.add('product-page');
+        
+        let addBtn = document.createElement('button');
+        addBtn.classList.add('product-card__add-btn');
+        if (window.store.cart.isInCart(product.id).length)
+            addBtn.innerText = 'added';
+        else addBtn.innerText = 'To cart';
+        addBtn.addEventListener('click', (event) => {
+            let id = event.target.parentNode.querySelector('input[name="id"]').value;
+            this.onAdd(id);
+        });
+
+        elem.innerHTML = `
+            <div class="product-page__title">${product.title}</div>
+            <input hidden name="id" value='${product.id}'>
+            <img class="product-page__image" src='${product.image}'>
+            <div class="product-page__info">
+                <p class="product-page__description">${product.description}</p>
+                <span class="product-page__info_price">$${product.price}</span>
+                <div class="product-page__info_stars" style="
+                            width:150px; 
+                            height: 30px;
+                            background: linear-gradient(0.25turn, yellow ${product.rating.rate*100/5}%, #ccc 0);">
+                    <img class="product-page__stars_template" src="../../src/stars_template.png">
+                </div>
+                <span class="product-page__info_rating">${product.rating.rate}</span>
+            </div>
+        `;
+        elem.append(addBtn);
+        return elem;
+    }
     this.onAdd = (id) => {
         window.store.cart.add(window.store.getById(id));
     }
@@ -90,14 +127,15 @@ const Main = function() {
         window.store.cart.removeFirst(id);
     }
 
-
-
     this.router = (mainElem) => {
         let hash = window.location.hash
         if (!hash) {
-                window.store.get().forEach(elem => {
-                    mainElem.append(this.createProductCard(elem));
-                })
+            window.store.get().forEach(elem => {
+                mainElem.append(this.createProductCard(elem));
+            })
+        } else if (hash.includes('product')) {
+            let id = window.location.hash.match(/[0-9]+$/)[0];
+            mainElem.append(this.createProductPage(window.store.getById(id)));
         } else {
             mainElem.classList.add('main_cart');
             let cartList = document.createElement('ul');
@@ -106,7 +144,7 @@ const Main = function() {
                 cartList.append(this.createCartItem(elem));
             })
             mainElem.append(cartList);
-            mainElem.append(document.createElement('span').innerText = `To pay: ${window.store.cart.calc()}`);
+            mainElem.append(document.createElement('span').innerText = `To pay: $${window.store.cart.calc()}`);
         }
     }
 
