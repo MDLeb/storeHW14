@@ -210,6 +210,7 @@ a, a:active, a:visited {
     padding-right: 60px;
     border-bottom: 1px solid #ccc;
     position: relative;
+    align-items: center;
 }
 .cart_list__item_title {
     flex: 4;
@@ -402,8 +403,21 @@ a, a:active, a:visited {
         width: 100%;
     }
     .cart_list__item {
-       gap: 20px;
+        padding-right: 35px;
     }
+    .cart_list__item_counter {
+        padding: 0 5px;
+    }
+    .cart_list__item_increase_btn,
+    .cart_list__item_reduce_btn {
+        height: 15px;
+        width: 15px;
+    }
+    .cart_list__item_title,
+    .cart_list__item_price {
+        margin-right: 10px;
+    }
+    
     .product-page {
         font-size: 14px;
     }
