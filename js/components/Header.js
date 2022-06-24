@@ -1,6 +1,7 @@
 const Header = function() {
 
     this.cartItems = 0;
+    this.nav = '';
 
     this.init = () => {
         let headerElem = document.createElement('header');
@@ -15,9 +16,13 @@ const Header = function() {
             </a>
             </div>
     `;
+        headerElem.querySelector('.content').append(this.nav);
         return headerElem;
     }
-
+    this.updateCategories = () => {
+        document.querySelector('.header').querySelector('.nav')?.remove();
+        document.querySelector('.header').querySelector('.content').append(this.nav);
+    }
     this.updateCart = () => {
         document.querySelector('.header').querySelector('.cart_count').innerHTML = `${this.cartItems}`; 
     }

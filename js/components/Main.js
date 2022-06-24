@@ -8,8 +8,14 @@ const Main = function() {
         let addBtn = document.createElement('button');
         addBtn.classList.add('product-card__add-btn');
         if (window.store.cart.isInCart(product.id).length)
-            addBtn.innerText = 'added';
-        else addBtn.innerText = 'To cart';
+            {
+                addBtn.innerText = 'In cart';
+                addBtn.classList.contains('in_cart') ? '' : addBtn.classList.add('in_cart')
+            }
+        else {
+            addBtn.innerText = 'To cart';
+            addBtn.classList.contains('in_cart') ? addBtn.classList.remove('in_cart') : '';
+        }
         addBtn.addEventListener('click', (event) => {
             event.preventDefault();
             let id = event.target.parentNode.querySelector('input[name="id"]').value;
@@ -87,8 +93,14 @@ const Main = function() {
         let addBtn = document.createElement('button');
         addBtn.classList.add('product-card__add-btn');
         if (window.store.cart.isInCart(product.id).length)
-            addBtn.innerText = 'added';
-        else addBtn.innerText = 'To cart';
+            {
+                addBtn.innerText = 'In cart';
+                addBtn.classList.contains('in_cart') ? '' : addBtn.classList.add('in_cart')
+            }
+        else {
+            addBtn.innerText = 'To cart';
+            addBtn.classList.contains('in_cart') ? addBtn.classList.remove('in_cart') : '';
+        }
         addBtn.addEventListener('click', (event) => {
             let id = event.target.parentNode.querySelector('input[name="id"]').value;
             this.onAdd(id);
@@ -96,6 +108,7 @@ const Main = function() {
 
         elem.innerHTML = `
             <div class="product-page__title">${product.title}</div>
+            <button class="product-page__close_btn">+</button>
             <input hidden name="id" value='${product.id}'>
             <img class="product-page__image" src='${product.image}'>
             <div class="product-page__info">
@@ -110,6 +123,11 @@ const Main = function() {
                 <span class="product-page__info_rating">${product.rating.rate}</span>
             </div>
         `;
+        elem.querySelector('.product-page__close_btn').addEventListener('click', () => {
+            if(window.navigation.canGoBack)
+                window.navigation.back();
+            else window.location.hash = '';
+        });
         elem.append(addBtn);
         return elem;
     }
@@ -136,22 +154,26 @@ const Main = function() {
         } else if (hash.includes('product')) {
             let id = window.location.hash.match(/[0-9]+$/)[0];
             mainElem.append(this.createProductPage(window.store.getById(id)));
-        } else {
+        } else if (hash.includes('cart')){
             mainElem.classList.add('main_cart');
             let cartList = document.createElement('ul');
             cartList.classList.add('cart_list');
 
-            // new Set(window.store.cart.get()).forEach(elem => {
-            //     console.log('+');
-            //     cartList.append(this.createCartItem(elem));
-            // })
             new Set(window.store.cart.get()).forEach(elem => {
-                console.log('+');
                 cartList.append(this.createCartItem(elem));
             })
-            
             mainElem.append(cartList);
-            mainElem.append(document.createElement('span').innerText = `To pay: $${window.store.cart.calc()}`);
+            let sum = document.createElement('span');
+            sum.classList.add('cart_sum');
+            sum.innerText = `To pay: $${window.store.cart.calc()}`
+            mainElem.append(sum);
+        } else {
+            let filter = hash.replace('#', '');
+            window.store.get()
+            .filter(item => item.category == filter)
+            .forEach(elem => {
+                mainElem.append(this.createProductCard(elem));
+            })
         }
     }
 

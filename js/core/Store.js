@@ -8,7 +8,6 @@ class Store {
     constructor (dataArray) {
         if(!Array.isArray(dataArray)) return;
         this.#data = dataArray.map(elem => new Product(elem));
-        console.log('Store added!');
     }
 
     set = (dataArray) => {
