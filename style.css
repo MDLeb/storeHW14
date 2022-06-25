@@ -96,6 +96,7 @@ a, a:active, a:visited {
     position: relative;
     height: 100px;
     width: 100px;
+    margin-top: 50%;
     border-radius: 50%;
     background: linear-gradient(yellowgreen, #fff, yellowgreen);
     animation: spinner 2s linear infinite normal backwards;
